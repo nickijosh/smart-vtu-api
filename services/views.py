@@ -7,7 +7,7 @@ from django.db import transaction
 from .models import AirtimePurchase, DataPurchase
 from .serializers import AirtimePurchaseSerializer, DataPurchaseSerializer
 from transactions.models import Transaction
-from users.models import Wallet
+from transactions.models import Wallet
 
 # Airtime Purchase View
 class AirtimePurchaseView(generics.CreateAPIView):
