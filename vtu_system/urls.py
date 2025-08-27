@@ -25,4 +25,5 @@ urlpatterns = [
     path('api/', include('transactions.urls')),
     path('api/transactions/', include('transactions.urls')),
     path('api/services/', include('services.urls')),
+    path('api/webhooks/', include('webhooks.urls')),
 ]

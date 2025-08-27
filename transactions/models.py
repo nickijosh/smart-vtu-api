@@ -2,21 +2,28 @@ from django.db import models
 from users.models import User
 from django.conf import settings
 from decimal import Decimal
+from users.models import Wallet
 
 class Transaction(models.Model):
     TYPE_CHOICES = [('FUND', 'Fund'), ('AIRTIME', 'Airtime'), ('DATA', 'Data')]
     STATUS_CHOICES = [('PENDING', 'Pending'), ('COMPLETED', 'Completed'), ('FAILED', 'Failed')]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='transactions')
-    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="transactions")
+    wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE, related_name="transactions")
+    transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPES)
     amount = models.DecimalField(max_digits=12, decimal_places=2)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
-    service_provider = models.CharField(max_length=100, blank=True)
-    phone_or_meter_number = models.CharField(max_length=50, blank=True)
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
+    network = models.CharField(max_length=20, null=True, blank=True)
+    data_plan = models.CharField(max_length=50, null=True, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
+    reference = models.CharField(max_length=60, unique=True, db_index=True, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.type} of {self.amount} by {self.user.username}"
+    
+        rid = self.reference or "-"
+        return f"{self.user.username} - {self.transaction_type} - {self.amount} [{self.status}] ({rid})"
 
 class Wallet(models.Model):
     user = models.OneToOneField(
