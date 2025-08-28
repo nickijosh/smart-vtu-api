@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'vtu_system.urls'
@@ -139,3 +140,6 @@ AUTH_USER_MODEL = 'users.User'
 WEBHOOK_SHARED_SECRET = "change_me_in_prod"
 
 ALLOWED_HOSTS = ['smart-vtu-api.onrender.com']
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
